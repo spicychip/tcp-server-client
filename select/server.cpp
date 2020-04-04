@@ -13,7 +13,7 @@
 
 int main(int argc, char** argv)
 {
-	int serverfd, acceptfd;
+	int serverfd,;
 	struct sockaddr_in my_addr;    //服务端
 	struct sockaddr_in their_addr; //客户端
 	unsigned int sin_size, myport = 6666, lisnum = 10;
@@ -77,9 +77,9 @@ int main(int argc, char** argv)
 		{
 			if(FD_ISSET(client_sockfd[i], &client_fdset))
 			{
-				printf("start recv from client[%d]:\n, i");
+				printf("start recv from client[%d]:\n", i);
 				ret = recv(client_sockfd[i], buffer, 1024, 0);
-				if(ret<0)
+				if(ret<=0)	//包含零
 				{
 					printf("client[%d] close\n", i);
 					close(client_sockfd[i]);
@@ -106,7 +106,7 @@ int main(int argc, char** argv)
 				bzero(buffer, 1024);
 				strcpy(buffer, "this is a server! welcome!\n");
 				send(sock_client, buffer, 1024, 0);    //把内容传给新来的客户端
-				printf("new connection client[%d] %s:%d\n", conn_amount, inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
+				printf("new connection client[%d] %s:%d\n", conn_amount-1, inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
 				bzero(buffer, sizeof(buffer));
 				ret = recv(sock_client, buffer, 1024, 0);
 				if(ret<0)
@@ -123,6 +123,12 @@ int main(int argc, char** argv)
 					printf("max connections!!!quit!!\n");
 					break;
 				}
+			}else{	//满连接处理
+				bzero(buffer, 1024);
+				strcpy(buffer, "Sorry, server connection is full.");
+				send(sock_client, buffer, 1024, 0);
+				bzero(buffer, sizeof(buffer));
+				close(sock_client);
 			}
 		}
 	}
