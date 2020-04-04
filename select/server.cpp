@@ -15,7 +15,6 @@ int main(int argc, char** argv)
 {
 	int serverfd,;
 	struct sockaddr_in my_addr;    //服务端
-	struct sockaddr_in their_addr; //客户端
 	unsigned int sin_size, myport = 6666, lisnum = 10;
 	if((serverfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
 	{
