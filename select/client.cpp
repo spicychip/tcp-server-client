@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
 	while(1)
 	{
 		bzero(buffer, sizeof(buffer));
-		scanf("%s", buffer);
+		fgets(buffer, 1024, stdin);
 		int p = strlen(buffer);
 		buffer[p] = '\0';
 		send(connfd, buffer, 1024, 0);
