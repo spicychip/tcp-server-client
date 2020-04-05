@@ -68,6 +68,7 @@ static void handle_connection(int sockfd)
 		}
 		if(pfds[1].revents & POLLIN)
 		{
+			fprintf(stderr, "echo:");
 			n = read(STDIN_FILENO, sendline, MAXLINE);
 			if(n == 0)
 			{
