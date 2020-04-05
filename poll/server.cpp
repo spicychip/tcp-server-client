@@ -106,12 +106,13 @@ void do_poll(int listenfd)
 		char buf[MAXLINE];
 		memset(buf, 0, MAXLINE);
 		int readlen = 0;
-		for(i = 1; i<maxi; i++)    //第0个是监听端口
+		for(i = 1; i<=maxi; i++)    //第0个是监听端口
 		{
 			if(clientfds[i].fd<0)
 				continue;
 			if(clientfds[i].revents & POLLIN)
 			{
+				fprintf(stdout, "msg client[%d] is:", i);
 				readlen = read(clientfds[i].fd, buf, MAXLINE);
 				if(readlen == 0)
 				{
@@ -119,7 +120,6 @@ void do_poll(int listenfd)
 					clientfds[i].fd = -1;
 					continue;
 				}
-				printf("msg is:");
 				write(STDOUT_FILENO, buf, readlen);
 				write(clientfds[i].fd, buf, readlen);  //发回去
 			}
